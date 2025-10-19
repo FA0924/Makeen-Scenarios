@@ -1,1 +1,68 @@
 // 
+        string[] questions = {
+            "what is the capital of oman?",
+            "What is 5 + 7?",
+            "what programming language are you learning in makeen right now?",
+            "what year did oman gain independence?",
+            "What is the largest ocean on earth?"
+        };
+
+        string[,] options = {
+            { "A) salalah", "B) muscat", "C) sohar", "D) nizwa" },
+            { "A) 10", "B) 11", "C) 12", "D) 13" },
+            { "A) java", "B) python", "C) C#", "D) C++" },
+            { "A) 1950", "B) 1960", "C) 1970", "D) 1980" },
+            { "A) atlantic", "B) indian", "C) arctic", "D) pacific" }
+        };
+
+        string[] correctAnswers = { "b", "c", "c", "c", "d" };
+        int score = 0;
+
+        Console.WriteLine("\t\t\t Welcome to Quiz App ");
+        Console.WriteLine("\t\t\t ------------------- ");
+        Console.WriteLine();
+
+        for (int i = 0; i < questions.Length; i++)
+        {
+            Console.WriteLine($"Question {i + 1}: {questions[i]}");
+            for (int j = 0; j < 4; j++)
+            {
+                Console.WriteLine($"\t {options[i, j]}");
+            }
+            Console.Write("Your Answer: ");
+            string userAnswer = Console.ReadLine();
+
+            if (userAnswer == correctAnswers[i])
+            {
+                Console.WriteLine("You Got it Right!");
+                score++;
+            }
+            else
+            {
+                Console.WriteLine($"Wrong! The correct answer was {correctAnswers[i]}");
+            }
+            Console.WriteLine();
+        }
+
+        Console.WriteLine($"Your final score is: {score}/5");
+
+        switch (score)
+        {
+            case 5:
+            case 4:
+                Console.WriteLine("Excellent!");
+                break;
+            case 3:
+            case 2:
+                Console.WriteLine("Good!");
+                break;
+            case 1:
+            case 0:
+                Console.WriteLine("Try Again!");
+                break;
+ 
+        }
+
+
+
+    
