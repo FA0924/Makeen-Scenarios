@@ -1,1 +1,112 @@
-//
+
+namespace assignment0
+{
+    public class Solution
+    {
+        public void main()
+        {
+            string[] books = { "Fire and Blood", "Ice and Fire", "The Last of US"};
+            bool[] isBorrowed = { false, false, false };
+            int UserInput;
+
+            Console.WriteLine("\t\t\t Welcome to Library Book Borrowing System ");
+            Console.WriteLine("\t\t\t ----------------------------------------- ");
+            string menu = "1- View Books \n 2- Borrow a Book \n 3- Return a Book \n 4- Check Availability \n 5- Exit";
+
+            do
+            {
+                Console.WriteLine(menu);
+                Console.Write("Enter your choice: ");
+                UserInput = int.Parse(Console.ReadLine());
+
+                switch (UserInput)
+                {
+                    case 1:
+                        Console.WriteLine("\t\t All Books");
+                        Console.WriteLine("\t\t ---------");
+                        for (int i = 0; i < books.Length; i++)
+                        {
+                            string status = isBorrowed[i] ? "Borrowed" : "Available";
+                            Console.WriteLine($"\t\t {i + 1}. {books[i]} - [{status}]");
+                        }
+                        Console.WriteLine();
+                        break;
+
+                    case 2:
+                        Console.WriteLine("\t\t Borrow Book");
+                        Console.WriteLine("\t\t -----------");
+                        Console.Write("Enter book number to borrow: ");
+                        int borrowIndex = int.Parse(Console.ReadLine()) - 1;
+
+                        if (borrowIndex >= 0 && borrowIndex < books.Length)
+                        {
+                            if (!isBorrowed[borrowIndex])
+                            {
+                                isBorrowed[borrowIndex] = true;
+                                Console.WriteLine($"You have successfully borrowed '{books[borrowIndex]}'");
+                            }
+                            else
+                            {
+                                Console.WriteLine("This book is already borrowed!");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid book number!");
+                        }
+                        Console.WriteLine();
+                        break;
+
+                    case 3:
+                        Console.WriteLine("\t\t Return Book");
+                        Console.WriteLine("\t\t -----------");
+                        Console.Write("Enter book number to return: ");
+                        int returnIndex = int.Parse(Console.ReadLine()) - 1;
+
+                        if (returnIndex >= 0 && returnIndex < books.Length)
+                        {
+                            if (isBorrowed[returnIndex])
+                            {
+                                isBorrowed[returnIndex] = false;
+                                Console.WriteLine($"You have successfully returned '{books[returnIndex]}'");
+                            }
+                            else
+                            {
+                                Console.WriteLine("This book was not borrowed!");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid book number!");
+                        }
+                        Console.WriteLine();
+                        break;
+
+                    case 4:
+                        Console.WriteLine("\t\t Check Availability");
+                        Console.WriteLine("\t\t ------------------");
+                        Console.Write("Enter book number to check: ");
+                        int checkIndex = int.Parse(Console.ReadLine()) - 1;
+
+                        if (checkIndex >= 0 && checkIndex < books.Length)
+                        {
+                            string availability = isBorrowed[checkIndex] ? "Borrowed" : "Available";
+                            Console.WriteLine($"'{books[checkIndex]}' is currently {availability}");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid book number!");
+                        }
+                        Console.WriteLine();
+                        break;
+
+                    default:
+                        if (UserInput != 5)
+                            Console.WriteLine("Invalid input!");
+                        break;
+                }
+            }
+            while (UserInput != 5);
+        }
+    }
+}
