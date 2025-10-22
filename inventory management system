@@ -1,1 +1,149 @@
-//
+using System;
+
+namespace InventoryManagementSystem
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string[] products = { "Apple", "Orange", "Milk", "Coffee" };
+            int[] quantities = { 2, 3, 4, 10 };
+
+
+            int userinput = -1;
+            while (userinput != 0)
+            {
+                Console.WriteLine("\n========================================");
+                Console.WriteLine("              MAIN MENU");
+                Console.WriteLine("========================================");
+                Console.WriteLine("1. View all products");
+                Console.WriteLine("2. Add Stock");
+                Console.WriteLine("3. Sell Product");
+                Console.WriteLine("4. Check product Quantity");
+                Console.WriteLine("0. Exit");
+                Console.WriteLine("========================================");
+                Console.Write("enter choice: ");
+
+                if (!int.TryParse(Console.ReadLine(), out userinput))
+                {
+                    Console.WriteLine("invalid input! please enter a number.");
+                    continue;
+                }
+
+                switch (userinput)
+                {
+                    case 1:
+                        Console.WriteLine("\n--------------------------------------");
+                        Console.WriteLine("         CURRENT INVENTORY");
+                        Console.WriteLine("--------------------------------------");
+                        for (int i = 0; i < products.Length; i++)
+                        {
+                            Console.WriteLine($"{i + 1}. {products[i]}: {quantities[i]} units");
+                        }
+                        Console.WriteLine("========================================");
+                        break;
+
+                    case 2:
+                        Console.WriteLine("\n--- Add Stock ---");
+                        Console.WriteLine("choose the product:");
+                        for (int i = 0; i < products.Length; i++)
+                        {
+                            Console.WriteLine($"{i + 1}. {products[i]}");
+                        }
+                        Console.Write("enter product number: ");
+
+                        if (!int.TryParse(Console.ReadLine(), out int answer) || answer < 1 || answer > products.Length)
+                        {
+                            Console.WriteLine("invalid product choice!");
+                            break;
+                        }
+
+                        answer--;
+                        Console.WriteLine($"current stock of {products[answer]}: {quantities[answer]}");
+                        Console.Write("how much you want to add? ");
+
+                        if (!int.TryParse(Console.ReadLine(), out int addamount) || addamount < 0)
+                        {
+                            Console.WriteLine("invalid quantity!");
+                            break;
+                        }
+
+                        quantities[answer] += addamount;
+                        Console.WriteLine($"succesfully added {addamount} units to {products[answer]}");
+                        Console.WriteLine($"  new stock: {quantities[answer]} units");
+                        break;
+
+                    case 3:
+                        Console.WriteLine("\n--- Sell Product ---");
+                        Console.WriteLine("choose the product you want to sell:");
+                        for (int i = 0; i < products.Length; i++)
+                        {
+                            Console.WriteLine($"{i + 1}. {products[i]}");
+                        }
+                        Console.Write("enter product number: ");
+
+                        if (!int.TryParse(Console.ReadLine(), out int sellchoice) || sellchoice < 1 || sellchoice > products.Length)
+                        {
+                            Console.WriteLine("invalid product choice!");
+                            break;
+                        }
+
+                        sellchoice--;
+                        Console.WriteLine($"current stock of {products[sellchoice]}: {quantities[sellchoice]}");
+                        Console.Write("how much you want to buy? ");
+
+                        if (!int.TryParse(Console.ReadLine(), out int amount) || amount < 0)
+                        {
+                            Console.WriteLine("invalid quantity!");
+                            break;
+                        }
+
+                        if (amount <= quantities[sellchoice])
+                        {
+                            quantities[sellchoice] -= amount;
+                            Console.WriteLine($"succesfully sold {amount} units of {products[sellchoice]}");
+                            Console.WriteLine($"  remaining stock: {quantities[sellchoice]} units");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"insufficent stock! available: {quantities[sellchoice]}, requested: {amount}");
+                        }
+                        break;
+
+                    case 4:
+                        Console.WriteLine("\n--- Check Product Quantity ---");
+                        Console.WriteLine("choose the product:");
+                        for (int i = 0; i < products.Length; i++)
+                        {
+                            Console.WriteLine($"{i + 1}. {products[i]}");
+                        }
+                        Console.Write("enter product number: ");
+
+                        if (!int.TryParse(Console.ReadLine(), out int checkchoice) || checkchoice < 1 || checkchoice > products.Length)
+                        {
+                            Console.WriteLine("invalid product choice!");
+                            break;
+                        }
+
+                        checkchoice--;
+                        Console.WriteLine("\n--- Stock Information ---");
+                        Console.WriteLine($"Product: {products[checkchoice]}");
+                        Console.WriteLine($"Current Quantity: {quantities[checkchoice]} units");
+                        break;
+
+                    case 0:
+                        Console.WriteLine("\nthank you for using the inventory management system!");
+                        Console.WriteLine("========================================");
+                        break;
+
+                    default:
+                        Console.WriteLine("invalid choice! please select 0-4.");
+                        break;
+                }
+            }
+
+            Console.WriteLine("\npress any key to exit...");
+            Console.ReadKey();
+        }
+    }
+}
