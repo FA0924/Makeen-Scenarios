@@ -1,0 +1,181 @@
+using System;
+
+namespace ParkingLotSystem
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string[] slots = new string[10];
+
+            Console.WriteLine("========================================");
+            Console.WriteLine("        PARKING LOT SYSTEM");
+            Console.WriteLine("========================================");
+            Console.WriteLine($"total parking slots: {slots.Length}");
+
+            int choice = -1;
+            while (choice != 0)
+            {
+                Console.WriteLine("\n========================================");
+                Console.WriteLine("              MAIN MENU");
+                Console.WriteLine("========================================");
+                Console.WriteLine("1. Park a Car");
+                Console.WriteLine("2. Remove a Car");
+                Console.WriteLine("3. View all Slots");
+                Console.WriteLine("4. Search for a Car");
+                Console.WriteLine("0. Exit");
+                Console.WriteLine("========================================");
+                Console.Write("enter choice: ");
+
+                if (!int.TryParse(Console.ReadLine(), out choice))
+                {
+                    Console.WriteLine("invalid input! please enter a number.");
+                    continue;
+                }
+
+                switch (choice)
+                {
+                    case 1:
+                        Console.WriteLine("\n--- Park a Car ---");
+                        Console.Write("enter car license plate to park: ");
+                        string licenseplate = Console.ReadLine();
+
+                        if (string.IsNullOrWhiteSpace(licenseplate))
+                        {
+                            Console.WriteLine("invalid license plate. please enter a valid plate number.");
+                            break;
+                        }
+
+                        // check for duplicate
+                        bool duplicate = false;
+                        for (int i = 0; i < slots.Length; i++)
+                        {
+                            if (slots[i] == licenseplate)
+                            {
+                                Console.WriteLine($"car with license plate '{licenseplate}' is already parked in slot {i + 1}.");
+                                duplicate = true;
+                                break;
+                            }
+                        }
+
+                        if (!duplicate)
+                        {
+                            bool parked = false;
+                            for (int i = 0; i < slots.Length; i++)
+                            {
+                                if (slots[i] == null)
+                                {
+                                    slots[i] = licenseplate;
+                                    Console.WriteLine($"car '{licenseplate}' parked succesfully in slot {i + 1}.");
+                                    parked = true;
+                                    break;
+                                }
+                            }
+
+                            if (!parked)
+                            {
+                                Console.WriteLine("parking lot is full! no available slots.");
+                            }
+                        }
+                        break;
+
+                    case 2:
+                        Console.WriteLine("\n--- Remove a Car ---");
+                        Console.Write("enter car license plate to remove: ");
+                        licenseplate = Console.ReadLine();
+                        
+                        if (string.IsNullOrWhiteSpace(licenseplate))
+                        {
+                            Console.WriteLine("invalid license plate.");
+                            break;
+                        }
+                        
+                        bool removed = false;
+
+                        for (int i = 0; i < slots.Length; i++)
+                        {
+                            if (slots[i] == licenseplate)
+                            {
+                                slots[i] = null;
+                                Console.WriteLine($"car '{licenseplate}' removed succesfully from slot {i + 1}.");
+                                removed = true;
+                                break;
+                            }
+                        }
+
+                        if (!removed)
+                        {
+                            Console.WriteLine($"car '{licenseplate}' not found in the parking lot.");
+                        }
+                        break;
+
+                    case 3:
+                        Console.WriteLine("\n========================================");
+                        Console.WriteLine("         PARKING LOT SLOTS");
+                        Console.WriteLine("========================================");
+                        
+                        int occupiedslots = 0;
+                        int emptyslots = 0;
+                        
+                        for (int i = 0; i < slots.Length; i++)
+                        {
+                            string status = slots[i] != null ? $"[occupied: {slots[i]}]" : "[empty]";
+                            Console.WriteLine($"slot {i + 1}: {status}");
+                            
+                            if (slots[i] != null)
+                                occupiedslots++;
+                            else
+                                emptyslots++;
+                        }
+                        
+                        Console.WriteLine("========================================");
+                        Console.WriteLine($"total slots: {slots.Length} | occupied: {occupiedslots} | empty: {emptyslots}");
+                        Console.WriteLine("========================================");
+                        break;
+
+                    case 4:
+                        Console.WriteLine("\n--- Search for a Car ---");
+                        Console.Write("enter car license plate to search: ");
+                        licenseplate = Console.ReadLine();
+                        
+                        if (string.IsNullOrWhiteSpace(licenseplate))
+                        {
+                            Console.WriteLine("invalid license plate.");
+                            break;
+                        }
+                        
+                        bool found = false;
+
+                        for (int i = 0; i < slots.Length; i++)
+                        {
+                            if (slots[i] == licenseplate)
+                            {
+                                Console.WriteLine("\n--- Search Result ---");
+                                Console.WriteLine($"car '{licenseplate}' is parked in slot {i + 1}.");
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if (!found)
+                        {
+                            Console.WriteLine($"car '{licenseplate}' not found in the parking lot.");
+                        }
+                        break;
+
+                    case 0:
+                        Console.WriteLine("\nthank you for using the parking lot system!");
+                        Console.WriteLine("========================================");
+                        break;
+
+                    default:
+                        Console.WriteLine("invalid choice! please select 0-4.");
+                        break;
+                }
+            }
+
+            Console.WriteLine("\npress any key to exit...");
+            Console.ReadKey();
+        }
+    }
+}
