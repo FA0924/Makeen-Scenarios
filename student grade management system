@@ -1,1 +1,167 @@
-//
+using System;
+
+namespace StudentGradeManagement
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string[] students = new string[5];
+            int studentcount = 0;
+            int[] grades = new int[5];
+
+            Console.WriteLine("========================================");
+            Console.WriteLine("  STUDENT GRADE MANAGEMENT SYSTEM");
+            Console.WriteLine("========================================");
+
+            int userinput = -1;
+            while (userinput != 0)
+            {
+                Console.WriteLine("\n========================================");
+                Console.WriteLine("              MAIN MENU");
+                Console.WriteLine("========================================");
+                Console.WriteLine("1. Add Student");
+                Console.WriteLine("2. Update Grade");
+                Console.WriteLine("3. View All Students and Grades");
+                Console.WriteLine("4. Show Average, Highest, and Lowest Grades");
+                Console.WriteLine("0. Exit");
+                Console.WriteLine("========================================");
+                Console.Write("enter choice: ");
+
+                if (!int.TryParse(Console.ReadLine(), out userinput))
+                {
+                    Console.WriteLine("invalid input! please enter a number.");
+                    continue;
+                }
+
+                switch (userinput)
+                {
+                    case 1:
+                        if (studentcount == 5)
+                        {
+                            Console.WriteLine("the class is full!! unable to add more students (max: 5)");
+                        }
+                        else
+                        {
+                            Console.WriteLine("\n--- Add Student ---");
+                            Console.Write("enter student name: ");
+                            students[studentcount] = Console.ReadLine();
+                            
+                            Console.Write("enter student grade (0-100): ");
+                            if (!int.TryParse(Console.ReadLine(), out int grade) || grade < 0 || grade > 100)
+                            {
+                                Console.WriteLine("invalid grade! please enter a value between 0-100.");
+                                break;
+                            }
+                            
+                            grades[studentcount] = grade;
+                            studentcount++;
+                            Console.WriteLine("student added succesfully!");
+                        }
+                        break;
+
+                    case 2:
+                        if (studentcount == 0)
+                        {
+                            Console.WriteLine("no students available.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("\n--- Update Grade ---");
+                            Console.Write("enter the student name who you want to update his grade: ");
+                            string sn = Console.ReadLine();
+                            bool found = false;
+
+                            for (int i = 0; i < studentcount; i++)
+                            {
+                                if (students[i].Equals(sn, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    Console.WriteLine($"current grade: {grades[i]}");
+                                    Console.Write("enter the new grade (0-100): ");
+                                    
+                                    if (!int.TryParse(Console.ReadLine(), out int newgrade) || newgrade < 0 || newgrade > 100)
+                                    {
+                                        Console.WriteLine("invalid grade! please enter a value between 0-100.");
+                                        found = true;
+                                        break;
+                                    }
+                                    
+                                    grades[i] = newgrade;
+                                    Console.WriteLine("grade updated succesfully!");
+                                    found = true;
+                                    break;
+                                }
+                            }
+
+                            if (!found)
+                            {
+                                Console.WriteLine("there is no student with that name");
+                            }
+                        }
+                        break;
+
+                    case 3:
+                        if (studentcount == 0)
+                        {
+                            Console.WriteLine("no students available.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("\n========================================");
+                            Console.WriteLine("           STUDENTS LIST");
+                            Console.WriteLine("========================================");
+                            for (int i = 0; i < studentcount; i++)
+                            {
+                                Console.WriteLine($"{i + 1}. student name: {students[i]}, grade: {grades[i]}");
+                            }
+                            Console.WriteLine("========================================");
+                        }
+                        break;
+
+                    case 4:
+                        if (studentcount == 0)
+                        {
+                            Console.WriteLine("no students available to calculate grades.");
+                        }
+                        else
+                        {
+                            int total = 0;
+                            int highest = grades[0];
+                            int lowest = grades[0];
+
+                            for (int i = 0; i < studentcount; i++)
+                            {
+                                total += grades[i];
+                                if (grades[i] > highest) highest = grades[i];
+                                if (grades[i] < lowest) lowest = grades[i];
+                            }
+
+                            double average = (double)total / studentcount;
+                            
+                            Console.WriteLine("\n========================================");
+                            Console.WriteLine("         GRADE STATISTICS");
+                            Console.WriteLine("========================================");
+                            Console.WriteLine($"average grade: {average:F2}");
+                            Console.WriteLine($"highest grade: {highest}");
+                            Console.WriteLine($"lowest grade: {lowest}");
+                            Console.WriteLine($"total students: {studentcount}");
+                            Console.WriteLine("========================================");
+                        }
+                        break;
+
+                    case 0:
+                        Console.WriteLine("\nthank you for using the student grade management system!");
+                        Console.WriteLine("========================================");
+                        break;
+
+                    default:
+                        Console.WriteLine("invalid option. please choose again (0-4).");
+                        break;
+                }
+            }
+
+            Console.WriteLine("\npress any key to exit...");
+            Console.ReadKey();
+        }
+    }
+}
